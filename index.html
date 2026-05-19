@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maraki Games</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Karnak+Pro:wght@400;500;700&family=Libre+Franklin:wght@400;500;600;700&family=Karnak:wght@500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body class="home">
+  <header class="masthead">
+    <div class="masthead-inner">
+      <button class="icon-btn" aria-label="Menu">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <a class="brand" href="index.html">
+        <span class="brand-mark">M</span>
+        <span class="brand-name">Maraki Games</span>
+      </a>
+      <button class="icon-btn" aria-label="Account">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="home-main">
+    <section class="hero">
+      <p class="hero-eyebrow" id="todayDate">Today</p>
+      <h1 class="hero-title">Good <span id="greetingTime">morning</span>.<br />Here are today's puzzles.</h1>
+      <p class="hero-sub">A little something I made for you. Happy anniversary, my love. 🤍</p>
+    </section>
+
+    <section class="games-grid">
+      <a class="game-card crossword" href="games/crossword.html">
+        <div class="game-icon icon-crossword" aria-hidden="true">
+          <div class="cw-grid">
+            <span></span><span class="filled"></span><span></span><span></span>
+            <span></span><span></span><span></span><span class="filled"></span>
+            <span class="filled"></span><span></span><span></span><span></span>
+            <span></span><span></span><span class="filled"></span><span></span>
+          </div>
+        </div>
+        <div class="game-meta">
+          <h3>The Crossword</h3>
+          <p class="game-tag">Anniversary edition</p>
+          <p class="game-byline">By Stef</p>
+        </div>
+      </a>
+
+      <a class="game-card mini" href="games/mini.html">
+        <div class="game-icon icon-mini" aria-hidden="true">
+          <div class="mini-grid">
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+        <div class="game-meta">
+          <h3>The Mini</h3>
+          <p class="game-tag">A bite-sized one</p>
+          <p class="game-byline">5x5</p>
+        </div>
+      </a>
+
+      <a class="game-card connections" href="games/connections.html">
+        <div class="game-icon icon-connections" aria-hidden="true">
+          <div class="conn-grid">
+            <span class="c1"></span><span class="c2"></span><span class="c3"></span><span class="c4"></span>
+            <span class="c2"></span><span class="c1"></span><span class="c4"></span><span class="c3"></span>
+            <span class="c3"></span><span class="c4"></span><span class="c1"></span><span class="c2"></span>
+            <span class="c4"></span><span class="c3"></span><span class="c2"></span><span class="c1"></span>
+          </div>
+        </div>
+        <div class="game-meta">
+          <h3>Connections</h3>
+          <p class="game-tag">Group them in fours.</p>
+          <p class="game-byline">#001</p>
+        </div>
+      </a>
+
+      <a class="game-card wordle" href="games/wordle.html">
+        <div class="game-icon icon-wordle" aria-hidden="true">
+          <div class="wordle-row">
+            <span class="green">U</span><span class="green">S</span><span class="yellow">!</span><span></span><span></span>
+          </div>
+        </div>
+        <div class="game-meta">
+          <h3>Wordle</h3>
+          <p class="game-tag">Get it in six.</p>
+          <p class="game-byline">A new word every day</p>
+        </div>
+      </a>
+
+      <a class="game-card spellingbee" href="games/spellingbee.html">
+        <div class="game-icon icon-bee" aria-hidden="true">
+          <div class="hive">
+            <span class="hex outer"></span>
+            <span class="hex outer"></span>
+            <span class="hex outer"></span>
+            <span class="hex center"></span>
+            <span class="hex outer"></span>
+            <span class="hex outer"></span>
+            <span class="hex outer"></span>
+          </div>
+        </div>
+        <div class="game-meta">
+          <h3>Spelling Bee</h3>
+          <p class="game-tag">How many words can you find?</p>
+          <p class="game-byline">7 letters today</p>
+        </div>
+      </a>
+
+      <a class="game-card love" href="games/letter.html">
+        <div class="game-icon icon-letter" aria-hidden="true">
+          <div class="heart">♡</div>
+        </div>
+        <div class="game-meta">
+          <h3>A Letter for You</h3>
+          <p class="game-tag">Open when you're done.</p>
+          <p class="game-byline">From me</p>
+        </div>
+      </a>
+    </section>
+
+    <section class="streak">
+      <div class="streak-card">
+        <h4>Today's streak</h4>
+        <p class="streak-num"><span id="streakDays">1</span> day</p>
+        <p class="streak-sub">Day one of forever, hopefully.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Made with love · <span id="footerYear"></span></p>
+  </footer>
+
+  <script src="js/home.js"></script>
+</body>
+</html>
