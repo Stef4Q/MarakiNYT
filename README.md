@@ -1,4 +1,4 @@
-# MarakiNYT — Maraki Games
+# Maki
 
 A personalised puzzle site for Maraki-mou, built for our anniversary.
 

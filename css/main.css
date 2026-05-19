@@ -1,4 +1,4 @@
-/* === Maraki Games · base styles === */
+/* === Maki · base styles === */
 
 :root {
   --bg: #ffffff;
@@ -832,6 +832,59 @@ button { font-family: inherit; cursor: pointer; }
   color: #2a2a2a;
 }
 .letter-locked, .letter-open { transition: opacity 0.4s ease; }
+
+/* ============ Mobile tweaks ============ */
+@media (max-width: 560px) {
+  .masthead-inner { padding: 8px 12px; }
+  .brand-name { font-size: 18px; }
+  .home-main { padding: 20px 14px 40px; }
+  .hero { padding: 18px 0 24px; }
+  .hero-title { font-size: 26px; }
+  .hero-sub { font-size: 15px; }
+  .games-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 20px 0;
+  }
+  .game-card { padding: 18px 8px 14px; }
+  .game-icon { width: 72px; height: 72px; margin-bottom: 12px; }
+  .game-meta h3 { font-size: 17px; }
+  .game-tag { font-size: 13px; }
+  .game-byline { font-size: 11px; }
+
+  .game-header-inner { padding: 10px 12px; gap: 6px; }
+  .game-title { font-size: 17px; }
+  .game-actions { gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+  .game-actions .btn { padding: 6px 10px; font-size: 12px; }
+  .back-link { padding: 4px 6px; font-size: 13px; }
+
+  .cw-layout { padding: 12px 10px 220px; gap: 16px; }
+  .cw-clue-bar { padding: 10px 12px; min-height: 48px; }
+  .cw-clue-bar .clue-text { font-size: 15px; }
+
+  .conn-page { padding: 18px 12px 60px; }
+  .conn-tile { font-size: 11px; padding: 4px; }
+  .conn-intro { font-size: 16px; }
+
+  .wordle-page { padding: 14px 8px 40px; }
+  .w-cell { width: 48px; height: 48px; font-size: 22px; }
+  .w-key { height: 48px; font-size: 12px; max-width: 36px; }
+  .w-key.wide { max-width: 52px; font-size: 11px; }
+  .w-kbd .w-row { gap: 4px; }
+
+  .sb-page { padding: 16px 12px 40px; gap: 18px; }
+  .sb-hive { transform: scale(0.85); transform-origin: center top; }
+  .sb-input { font-size: 22px; margin-bottom: 16px; }
+
+  .letter-page { padding: 36px 18px; }
+  .letter-page h1 { font-size: 26px; }
+  .letter-page p { font-size: 16px; }
+}
+
+@media (max-width: 380px) {
+  .games-grid { grid-template-columns: 1fr; }
+  .w-cell { width: 42px; height: 42px; font-size: 20px; }
+}
 
 /* ============ Toast ============ */
 .toast {
