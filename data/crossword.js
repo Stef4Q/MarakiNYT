@@ -11,15 +11,46 @@ window.CROSSWORD_DATA = {
   title: "The Crossword · Anniversary Edition",
   author: "Stef",
 
-  // ───── GRID — replace these placeholder rows with the real 30-wide × 36-tall grid ─────
+  // ───── GRID — 30 wide × 36 tall ─────
   // Each row is a string. "." = black square, A–Z = filled cell.
-  // Length of every row must equal size.cols.
-  size: { rows: 4, cols: 4 },
+  size: { rows: 36, cols: 30 },
   grid: [
-    "LOVE",
-    "OPEN",
-    "VENT",
-    "ENDS"
+    "......S.L......S.....N..CLUJ..",
+    "......A.I..Z..INCEPTION....U..",
+    "......G.Z..O.F.O..O..A.S...L..",
+    "T.....A.ANDREI.W..P..P.PEONY..",
+    "U..K..P....B.L....C..T.O.P....",
+    "L.SIFNOS..GALAKTOBOUREKO.A....",
+    "I..F.........K..C.R....N......",
+    "PUPIC..B...K.I..H.N.S...V.A...",
+    "S..S.S.U..BACAU.I...TOOTING...",
+    "...S.T.N...T..N.L...A...N.I...",
+    "..VIVALAVIDA..T.D..GREASY.S...",
+    "...A.M.....I..O.R.....T.L.T...",
+    "......C.N..F.BLUEBELL.H..PRET.",
+    ".....PARIS.I..D.N..I..EYE.I...",
+    "......C.K.H.L......K..N.......",
+    ".....KALIMERA..VANGELIS.......",
+    "..........A.G.M..I............",
+    ".........GREECE..C.P..........",
+    "..........T.R.LATENESS...N....",
+    "............I.R....N..GREEK...",
+    ".........A.M..O.SANTA.O..O....",
+    ".........GRAPES....E..L..N....",
+    ".........A.R..E.B.CLAUDIU.....",
+    "......O..P.A....R..I..E.......",
+    ".....WARWICK...DACHSHUND......",
+    "......N....I....S.........P...",
+    "..STEFANAKO.VASSO...Z.....I...",
+    ".....I..........VODKA.F.C.P...",
+    ".....X.WAKEMEUP..A..N.L.O.E...",
+    ".....Y........R..K..T.O.KARDIA",
+    ".....O....R..PAROS.GEORGE.I...",
+    ".....U.ZERO...G.......I.......",
+    "..........S.T.U.....JUNE......",
+    ".........TEIUBESC.............",
+    "..........S.N.................",
+    "...........DARK..............."
   ],
 
   // ───── ANSWERS — used to grade Submit even before the full grid lands. ─────
