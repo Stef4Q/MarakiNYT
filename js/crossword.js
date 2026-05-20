@@ -276,7 +276,18 @@
     if (!active) return;
     const word = currentWord();
     const idx = word.indexOf(active.cell);
+    // Find the next empty cell in this word.
     for (let i = idx + 1; i < word.length; i++) {
+      if (!word[i].input) { active.cell = word[i]; render(); return; }
+    }
+    // No empty cell after us. If the whole word is now full, jump to the
+    // next word automatically (across → across, then across → down at end).
+    if (word.every(c => c.input)) {
+      nextWord();
+      return;
+    }
+    // Word still has gaps before us — wrap back to the first empty cell.
+    for (let i = 0; i < idx; i++) {
       if (!word[i].input) { active.cell = word[i]; render(); return; }
     }
     if (idx + 1 < word.length) { active.cell = word[idx + 1]; render(); }
@@ -407,8 +418,24 @@
     const nums = Object.keys(map).map(Number).sort((a,b)=>a-b);
     const curNum = dir === 'across' ? active.cell.acrossNum : active.cell.downNum;
     const i = nums.indexOf(curNum);
-    const nxt = nums[(i + 1) % nums.length];
-    active.cell = map[nxt][0];
+    if (i + 1 < nums.length) {
+      active.cell = map[nums[i + 1]][0];
+      active.dir = dir;
+      render();
+      return;
+    }
+    // End of this direction — flip to the other direction's first word.
+    const otherDir = dir === 'across' ? 'down' : 'across';
+    const otherMap = otherDir === 'across' ? acrossStarts : downStarts;
+    const otherNums = Object.keys(otherMap).map(Number).sort((a,b)=>a-b);
+    if (otherNums.length === 0) {
+      // No other-direction words at all — wrap within same direction.
+      active.cell = map[nums[0]][0];
+      render();
+      return;
+    }
+    active.dir = otherDir;
+    active.cell = otherMap[otherNums[0]][0];
     render();
   }
   function prevWord() {
@@ -418,8 +445,23 @@
     const nums = Object.keys(map).map(Number).sort((a,b)=>a-b);
     const curNum = dir === 'across' ? active.cell.acrossNum : active.cell.downNum;
     const i = nums.indexOf(curNum);
-    const nxt = nums[(i - 1 + nums.length) % nums.length];
-    active.cell = map[nxt][0];
+    if (i > 0) {
+      active.cell = map[nums[i - 1]][0];
+      active.dir = dir;
+      render();
+      return;
+    }
+    // First word of this direction — jump to the other direction's last word.
+    const otherDir = dir === 'across' ? 'down' : 'across';
+    const otherMap = otherDir === 'across' ? acrossStarts : downStarts;
+    const otherNums = Object.keys(otherMap).map(Number).sort((a,b)=>a-b);
+    if (otherNums.length === 0) {
+      active.cell = map[nums[nums.length - 1]][0];
+      render();
+      return;
+    }
+    active.dir = otherDir;
+    active.cell = otherMap[otherNums[otherNums.length - 1]][0];
     render();
   }
 
