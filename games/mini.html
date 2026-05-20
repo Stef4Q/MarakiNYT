@@ -25,44 +25,60 @@
     </div>
   </header>
 
-  <main class="cw-layout">
-    <div class="cw-board-wrap">
-      <div class="cw-clue-bar" id="cwClueBar">
-        <button class="clue-nav clue-prev" aria-label="Previous">‹</button>
-        <span class="clue-text">Tap a square to begin.</span>
-        <button class="clue-nav clue-next" aria-label="Next">›</button>
-      </div>
-      <div class="cw-board" id="cwBoard"></div>
-      <p class="cw-author" id="puzzleAuthor"></p>
+  <!-- Level picker (default view) -->
+  <main id="miniHub" class="mini-hub"></main>
+
+  <!-- Game view (shown when ?level=N) -->
+  <div id="miniGame" style="display:none;">
+    <div class="mini-game-bar">
+      <button class="btn btn-ghost" id="miniBackToHub">‹ Levels</button>
+      <span class="mini-level-pill" id="miniLevelPill"></span>
     </div>
-
-    <aside class="cw-clues">
-      <div class="cw-clue-list">
-        <h4>Across</h4>
-        <ol id="acrossList"></ol>
+    <main class="cw-layout">
+      <div class="cw-board-wrap">
+        <div class="cw-clue-bar" id="cwClueBar">
+          <button class="clue-nav clue-prev" aria-label="Previous">‹</button>
+          <span class="clue-text">Tap a square to begin.</span>
+          <button class="clue-nav clue-next" aria-label="Next">›</button>
+        </div>
+        <div class="cw-board" id="cwBoard"></div>
+        <p class="cw-author" id="puzzleAuthor"></p>
       </div>
-      <div class="cw-clue-list">
-        <h4>Down</h4>
-        <ol id="downList"></ol>
-      </div>
-    </aside>
-  </main>
-
-  <div class="cw-word-preview" id="cwWordPreview" aria-hidden="true"></div>
-  <div class="cw-keyboard" id="cwKeyboard"></div>
+      <aside class="cw-clues">
+        <div class="cw-clue-list">
+          <h4>Across</h4>
+          <ol id="acrossList"></ol>
+        </div>
+        <div class="cw-clue-list">
+          <h4>Down</h4>
+          <ol id="downList"></ol>
+        </div>
+      </aside>
+    </main>
+    <div class="cw-word-preview" id="cwWordPreview" aria-hidden="true"></div>
+    <div class="cw-keyboard" id="cwKeyboard"></div>
+  </div>
 
   <div class="modal-backdrop" id="winModal">
     <div class="modal">
       <button class="modal-close">&times;</button>
       <h2>You did it! 🤍</h2>
       <p class="modal-body">That was a quick one.</p>
-      <a class="btn btn-primary" href="../index.html">Back to games</a>
+      <div class="modal-actions">
+        <a class="btn" href="mini.html">Back to levels</a>
+        <a class="btn btn-primary" id="miniNextLvl" href="#" style="display:none;">Next level →</a>
+      </div>
     </div>
   </div>
 
-  <script>window.CW_DATA_KEY = 'MINI_DATA'; window.GAME_TIMER_KEY = 'mini';</script>
-  <script src="../data/mini.js"></script>
-  <script src="../js/timer.js"></script>
+  <!-- Level data first, then hub picker (which sets CROSSWORD_DATA when a
+       level is selected). Timer + engine come last so they can read the
+       flags the hub set. -->
+  <script src="../data/mini1.js"></script>
+  <script src="../data/mini2.js"></script>
+  <script src="../data/mini3.js"></script>
+  <script src="../js/mini-hub.js"></script>
   <script src="../js/crossword.js"></script>
+  <script src="../js/timer.js"></script>
 </body>
 </html>

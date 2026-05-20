@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Strands · Maki</title>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700&family=Karnak+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/main.css" />
+</head>
+<body class="game-page">
+  <header class="game-header">
+    <div class="game-header-inner">
+      <a href="../index.html" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Back
+      </a>
+      <h1 class="game-title">Strands</h1>
+      <div class="game-actions">
+        <span class="game-timer" id="gameTimer">0:00</span>
+        <button class="btn btn-ghost" id="strReset">Reset</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="str-page">
+    <section class="str-intro">
+      <p class="str-eyebrow">Today's theme</p>
+      <h2 class="str-theme" id="strTheme">—</h2>
+      <p class="str-blurb" id="strBlurb"></p>
+    </section>
+
+    <section class="str-stage">
+      <div class="str-current" id="strCurrent" aria-live="polite"></div>
+
+      <div class="str-board-wrap">
+        <svg class="str-lines" id="strLines" aria-hidden="true"></svg>
+        <div class="str-board" id="strBoard"></div>
+      </div>
+
+      <div class="str-meter" id="strMeter">
+        <div class="str-meter-label">
+          <span id="strFoundCount">0</span> of <span id="strTotal">0</span> theme words
+        </div>
+        <div class="str-hint-bar">
+          <div class="str-hint-fill" id="strHintFill"></div>
+          <div class="str-hint-pill" id="strHintBtn">Hint</div>
+        </div>
+        <p class="str-meter-sub">Find a non-theme word to fill the meter. Full = hint reveals where a theme word starts.</p>
+      </div>
+
+      <ul class="str-found-list" id="strFoundList"></ul>
+    </section>
+  </main>
+
+  <div class="modal-backdrop" id="winModal">
+    <div class="modal">
+      <button class="modal-close">&times;</button>
+      <h2>You found them all 🤍</h2>
+      <p class="modal-body"></p>
+      <a class="btn btn-primary" href="../index.html">Back to games</a>
+    </div>
+  </div>
+
+  <script>window.GAME_TIMER_KEY = 'strands';</script>
+  <script src="../data/strands.js"></script>
+  <script src="../js/timer.js"></script>
+  <script src="../js/strands.js"></script>
+</body>
+</html>

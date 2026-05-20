@@ -4,6 +4,8 @@
 //
 // Persists per-game so closing & reopening continues where you left off.
 (function () {
+  // Don't tick on level-picker / non-game views.
+  if (window.GAME_TIMER_SKIP) return;
   const key = 'maraki_timer_' + (window.GAME_TIMER_KEY || location.pathname);
   const el = document.getElementById('gameTimer');
 

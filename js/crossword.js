@@ -5,7 +5,8 @@
   const dataKey = window.CW_DATA_KEY || 'CROSSWORD_DATA';
   const DATA = window[dataKey];
   if (!DATA) {
-    console.error('Missing puzzle data:', dataKey);
+    // Hub / picker view — engine stays dormant. Tell timer to do the same.
+    window.GAME_TIMER_SKIP = true;
     return;
   }
 
@@ -373,6 +374,16 @@
     if (errors === 0) {
       const t = window.GameTimer ? window.GameTimer.stop() : null;
       const tStr = t != null ? ` in ${Math.floor(t/60)}:${String(t%60).padStart(2,'0')}` : '';
+      // Mini-specific: persist solve + unlock + offer next-level button.
+      const activeLvl = window.MINI_ACTIVE_LEVEL;
+      if (activeLvl && typeof window.__markMiniSolved === 'function') {
+        window.__markMiniSolved(activeLvl, t);
+        const nextBtn = document.getElementById('miniNextLvl');
+        if (nextBtn && activeLvl < 3) {
+          nextBtn.href = '?level=' + (activeLvl + 1);
+          nextBtn.style.display = '';
+        }
+      }
       showWinModal(`You solved it${tStr} 🤍`, "Beautiful work.");
     } else {
       showToast(`${errors} ${errors === 1 ? 'square is' : 'squares are'} wrong`);
