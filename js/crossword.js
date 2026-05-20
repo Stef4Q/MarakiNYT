@@ -394,6 +394,9 @@
           nextBtn.href = '?level=' + (activeLvl + 1);
           nextBtn.style.display = '';
         }
+      } else if (window.MarakiProgress) {
+        // Standalone (non-mini) crossword solve counts toward overall progress.
+        window.MarakiProgress.markSolved('crossword');
       }
       showWinModal(`You solved it${tStr} 🤍`, "Beautiful work.");
     } else {

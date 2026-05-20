@@ -105,6 +105,7 @@
         if (solvedGroups.length === DATA.groups.length) {
           const t = window.GameTimer ? window.GameTimer.stop() : null;
           const tStr = t != null ? ` · ${Math.floor(t/60)}:${String(t%60).padStart(2,'0')}` : '';
+          if (window.MarakiProgress) window.MarakiProgress.markSolved('connections');
           setTimeout(() => showModal('You got them all!', `Four out of four${tStr}. I love how your brain works.`), 400);
         }
       }, 820);

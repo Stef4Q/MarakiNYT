@@ -47,6 +47,10 @@
     prog[id] = true;
     saveProgress(prog);
     if (seconds != null) setBestTime(id, seconds);
+    // Mini counts as "solved" for site progress once all three levels are done.
+    if (window.MarakiProgress && [1,2,3].every(n => prog[n])) {
+      window.MarakiProgress.markSolved('mini');
+    }
   };
 
   // URL helpers

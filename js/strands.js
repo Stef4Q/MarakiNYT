@@ -454,6 +454,7 @@
       won = true;
       const t = window.GameTimer ? window.GameTimer.stop() : null;
       const tStr = t != null ? `${Math.floor(t/60)}:${String(t%60).padStart(2,'0')}` : '';
+      if (window.MarakiProgress) window.MarakiProgress.markSolved('strands');
       const modal = document.getElementById('winModal');
       if (modal) {
         modal.querySelector('h2').textContent = 'Genius 🤍';

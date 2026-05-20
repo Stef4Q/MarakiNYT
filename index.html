@@ -13,29 +13,24 @@
 </head>
 <body class="home">
   <header class="masthead">
-    <div class="masthead-inner">
-      <button class="icon-btn" aria-label="Menu">
-        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      </button>
+    <div class="masthead-inner masthead-inner--center">
       <a class="brand" href="index.html">
         <span class="brand-mark">M</span>
         <span class="brand-name">Maki</span>
       </a>
-      <button class="icon-btn" aria-label="Account">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      </button>
     </div>
   </header>
 
   <main class="home-main">
     <section class="hero">
-      <p class="hero-eyebrow" id="todayDate">Today</p>
-      <h1 class="hero-title">Good <span id="greetingTime">morning</span>.<br />Here are today's puzzles.</h1>
-      <p class="hero-sub">A little something I made for you. Happy anniversary, my love. 🤍</p>
+      <p class="hero-eyebrow">A little gift</p>
+      <h1 class="hero-title">For you, my love.</h1>
+      <p class="hero-sub">Six small things to do, in order. Take your time. The last one is the prize. 🤍</p>
     </section>
 
-    <section class="games-grid">
-      <a class="game-card crossword" href="games/crossword.html">
+    <section class="games-grid" id="gamesGrid">
+      <a class="game-card crossword" data-game="crossword" href="games/crossword.html">
+        <span class="game-step">1</span>
         <div class="game-icon icon-crossword" aria-hidden="true">
           <div class="cw-grid">
             <span></span><span class="filled"></span><span></span><span></span>
@@ -49,9 +44,11 @@
           <p class="game-tag">Anniversary edition</p>
           <p class="game-byline">By Stef</p>
         </div>
+        <span class="game-status" aria-hidden="true"></span>
       </a>
 
-      <a class="game-card mini" href="games/mini.html">
+      <a class="game-card mini" data-game="mini" href="games/mini.html">
+        <span class="game-step">2</span>
         <div class="game-icon icon-mini" aria-hidden="true">
           <div class="mini-grid">
             <span></span><span></span><span></span><span></span><span></span>
@@ -63,12 +60,14 @@
         </div>
         <div class="game-meta">
           <h3>The Mini</h3>
-          <p class="game-tag">A bite-sized one</p>
-          <p class="game-byline">5x5</p>
+          <p class="game-tag">Three small ones</p>
+          <p class="game-byline">Warm-up · middle · finisher</p>
         </div>
+        <span class="game-status" aria-hidden="true"></span>
       </a>
 
-      <a class="game-card connections" href="games/connections.html">
+      <a class="game-card connections" data-game="connections" href="games/connections.html">
+        <span class="game-step">3</span>
         <div class="game-icon icon-connections" aria-hidden="true">
           <div class="conn-grid">
             <span class="c1"></span><span class="c2"></span><span class="c3"></span><span class="c4"></span>
@@ -79,12 +78,14 @@
         </div>
         <div class="game-meta">
           <h3>Connections</h3>
-          <p class="game-tag">Group them in fours.</p>
-          <p class="game-byline">#001</p>
+          <p class="game-tag">Group them in fours</p>
+          <p class="game-byline">Four sets, no mistakes</p>
         </div>
+        <span class="game-status" aria-hidden="true"></span>
       </a>
 
-      <a class="game-card wordle" href="games/wordle.html">
+      <a class="game-card wordle" data-game="wordle" href="games/wordle.html">
+        <span class="game-step">4</span>
         <div class="game-icon icon-wordle" aria-hidden="true">
           <div class="wordle-row">
             <span class="green">U</span><span class="green">S</span><span class="yellow">!</span><span></span><span></span>
@@ -92,12 +93,14 @@
         </div>
         <div class="game-meta">
           <h3>Wordle</h3>
-          <p class="game-tag">Get it in six.</p>
-          <p class="game-byline">A new word every day</p>
+          <p class="game-tag">Get it in six</p>
+          <p class="game-byline">One word, six chances</p>
         </div>
+        <span class="game-status" aria-hidden="true"></span>
       </a>
 
-      <a class="game-card strands" href="games/strands.html">
+      <a class="game-card strands" data-game="strands" href="games/strands.html">
+        <span class="game-step">5</span>
         <div class="game-icon icon-strands" aria-hidden="true">
           <div class="str-mini">
             <span class="str-mini-a"></span><span class="str-mini-b"></span><span class="str-mini-c"></span><span></span><span></span><span></span>
@@ -108,28 +111,32 @@
         </div>
         <div class="game-meta">
           <h3>Strands</h3>
-          <p class="game-tag">Drag a path through the theme.</p>
-          <p class="game-byline">A new puzzle daily</p>
+          <p class="game-tag">Drag a path through the theme</p>
+          <p class="game-byline">Find every one</p>
         </div>
+        <span class="game-status" aria-hidden="true"></span>
       </a>
 
-      <a class="game-card love" href="games/letter.html">
+      <a class="game-card love locked" data-game="letter" href="games/letter.html" id="letterCard">
+        <span class="game-step">6</span>
         <div class="game-icon icon-letter" aria-hidden="true">
           <div class="heart">♡</div>
         </div>
         <div class="game-meta">
           <h3>A Letter for You</h3>
-          <p class="game-tag">Open when you're done.</p>
+          <p class="game-tag" id="letterTag">Sealed until the end</p>
           <p class="game-byline">From me</p>
         </div>
+        <span class="game-status" aria-hidden="true"></span>
       </a>
     </section>
 
-    <section class="streak">
-      <div class="streak-card">
-        <h4>Today's streak</h4>
-        <p class="streak-num"><span id="streakDays">1</span> day</p>
-        <p class="streak-sub">Day one of forever, hopefully.</p>
+    <section class="progress" id="progressSection">
+      <div class="progress-card">
+        <h4>Your progress</h4>
+        <p class="progress-num"><span id="progressDone">0</span> of <span id="progressTotal">5</span> done</p>
+        <div class="progress-bar"><div class="progress-bar-fill" id="progressBarFill"></div></div>
+        <p class="progress-sub" id="progressSub">Start anywhere you like — the order's just a suggestion.</p>
       </div>
     </section>
   </main>
@@ -138,6 +145,7 @@
     <p>Made with love · <span id="footerYear"></span></p>
   </footer>
 
+  <script src="js/progress.js"></script>
   <script src="js/home.js"></script>
 </body>
 </html>

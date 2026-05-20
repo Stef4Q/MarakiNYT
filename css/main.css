@@ -276,40 +276,142 @@ button { font-family: inherit; cursor: pointer; }
   line-height: 1;
 }
 
-/* === Streak === */
-.streak {
+/* === Progress card === */
+.progress {
   display: flex;
   justify-content: center;
   padding-top: 8px;
 }
-.streak-card {
+.progress-card {
   border: 1px solid var(--rule);
   border-radius: 6px;
   padding: 18px 26px;
   text-align: center;
   background: #fafafa;
-  min-width: 240px;
+  min-width: 280px;
+  max-width: 420px;
 }
-.streak-card h4 {
-  margin: 0 0 4px;
+.progress-card h4 {
+  margin: 0 0 6px;
   font-family: var(--sans);
   font-size: 12px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-soft);
 }
-.streak-num {
+.progress-num {
   font-family: var(--serif);
-  font-size: 36px;
+  font-size: 30px;
   font-weight: 700;
-  margin: 4px 0;
+  margin: 4px 0 10px;
 }
-.streak-sub {
+.progress-bar {
+  height: 6px;
+  background: #ececec;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.progress-bar-fill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, #c4a96a, #b08246);
+  transition: width 0.5s ease;
+}
+.progress-sub {
   font-family: var(--serif);
   font-style: italic;
   color: var(--ink-soft);
   margin: 0;
   font-size: 14px;
+}
+
+/* === Centered masthead (no more dead menu/account buttons) === */
+.masthead-inner--center { justify-content: center; }
+
+/* === Card path states === */
+.game-card { position: relative; }
+.game-step {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--rule);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+.game-status {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--ink-faint);
+}
+.game-card.done .game-step {
+  background: #cbb56b;
+  color: #fff;
+  border-color: #cbb56b;
+}
+.game-card.done .game-status::before {
+  content: "✓";
+  color: #b08246;
+  font-weight: 700;
+}
+.game-card.done { background: #fbf7ec; }
+.game-card.next {
+  border-color: #b08246;
+  box-shadow: 0 0 0 2px rgba(176, 130, 70, 0.18);
+}
+.game-card.next .game-step {
+  background: #b08246;
+  color: #fff;
+  border-color: #b08246;
+}
+.game-card.next .game-status::before {
+  content: "Next";
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #b08246;
+  font-weight: 600;
+}
+.game-card.locked {
+  opacity: 0.62;
+  cursor: not-allowed;
+  background: #f7f5f0;
+}
+.game-card.locked .game-status::before {
+  content: "🔒";
+  font-size: 14px;
+}
+.game-card.locked:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--rule);
+}
+.game-card.love.unlocked {
+  border-color: #c98a8a;
+  background: #fff7f6;
+  box-shadow: 0 0 0 2px rgba(201, 138, 138, 0.22);
+}
+.game-card.love.unlocked .game-status::before {
+  content: "♡";
+  color: #c98a8a;
+  font-size: 16px;
 }
 
 /* === Footer === */
@@ -987,6 +1089,37 @@ button { font-family: inherit; cursor: pointer; }
   color: #2a2a2a;
 }
 .letter-locked, .letter-open { transition: opacity 0.4s ease; }
+.letter-locked {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 60px 24px;
+  display: flex;
+  justify-content: center;
+}
+.letter-locked-card {
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 36px 28px;
+  text-align: center;
+  background: #fbf9f4;
+  font-family: var(--serif);
+}
+.letter-lock-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+.letter-locked-card h2 {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 26px;
+  margin: 0 0 8px;
+}
+.letter-locked-card p {
+  color: var(--ink-soft);
+  font-style: italic;
+  margin: 0 0 22px;
+  line-height: 1.6;
+}
 
 /* ============ Mobile tweaks ============ */
 @media (max-width: 560px) {

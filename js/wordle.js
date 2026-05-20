@@ -267,6 +267,7 @@
           done = true;
           const t = window.GameTimer ? window.GameTimer.stop() : null;
           const tStr = t != null ? ` · ${Math.floor(t/60)}:${String(t%60).padStart(2,'0')}` : '';
+          if (window.MarakiProgress) window.MarakiProgress.markSolved('wordle');
           setTimeout(() => showModal('Got it! 🤍', `${guesses.length} ${guesses.length === 1 ? 'try' : 'tries'}${tStr}`), 250);
         } else if (guesses.length >= ROWS) {
           done = true;

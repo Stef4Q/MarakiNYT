@@ -19,7 +19,7 @@
     </div>
   </header>
 
-  <main class="letter-page">
+  <main class="letter-page" id="letterContent" style="display:none;">
     <h1>Happy Anniversary 🤍</h1>
     <p style="font-style:italic;color:var(--ink-soft);">[Replace this with your real letter — keep it as long as you want.]</p>
     <p>To my favorite person,</p>
@@ -27,5 +27,32 @@
     <p>Here's to many more mornings, many more puzzles, and many more years of figuring it out together.</p>
     <p style="margin-top:36px;">Always,<br />— Stef</p>
   </main>
+
+  <main class="letter-locked" id="letterLocked" style="display:none;">
+    <div class="letter-locked-card">
+      <div class="letter-lock-icon">🔒</div>
+      <h2>Not yet, my love.</h2>
+      <p id="letterLockedSub">Finish all the puzzles first. The letter is waiting.</p>
+      <a class="btn btn-primary" href="../index.html">Back to the puzzles</a>
+    </div>
+  </main>
+
+  <script src="../js/progress.js"></script>
+  <script>
+    (function () {
+      const P = window.MarakiProgress;
+      const content = document.getElementById('letterContent');
+      const locked = document.getElementById('letterLocked');
+      const sub = document.getElementById('letterLockedSub');
+      if (!P || P.allSolved()) {
+        if (content) content.style.display = '';
+      } else {
+        if (locked) locked.style.display = '';
+        const remaining = P.total() - P.solvedCount();
+        if (sub) sub.textContent =
+          `${remaining} more to go. Solve them and this page opens for you.`;
+      }
+    })();
+  </script>
 </body>
 </html>
