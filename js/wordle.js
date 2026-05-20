@@ -231,11 +231,15 @@
     } else if (ch === '↵' || ch === 'Enter') {
       if (current.length !== COLS) { shakeRow(guesses.length); showToast('Not enough letters'); return; }
       const upper = current.toUpperCase();
-      const validList = new Set([
-        ...DATA.validGuesses.map(w => w.toUpperCase()),
-        ...DATA.answers.map(w => w.toUpperCase())
-      ]);
-      if (!validList.has(upper)) { shakeRow(guesses.length); showToast('Not in word list'); return; }
+      // Any real English 5-letter word is accepted — overlap with answer
+      // doesn't matter. Validity = present in any of: the day's answer,
+      // the puzzle's curated list, or the big WORDLE_DICT.
+      const isValid =
+        upper === ANSWER ||
+        (DATA.answers && DATA.answers.map(w => w.toUpperCase()).includes(upper)) ||
+        (DATA.validGuesses && DATA.validGuesses.map(w => w.toUpperCase()).includes(upper)) ||
+        (window.WORDLE_DICT && window.WORDLE_DICT.has(upper));
+      if (!isValid) { shakeRow(guesses.length); showToast('Not in word list'); return; }
       if (hardMode) {
         const violation = violatesHardMode(upper);
         if (violation) { shakeRow(guesses.length); showToast(violation); return; }
