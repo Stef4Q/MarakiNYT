@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>The Crossword · Maki</title>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700&family=Karnak+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/main.css" />
+</head>
+<body class="game-page">
+  <header class="game-header">
+    <div class="game-header-inner">
+      <a href="../index.html" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Back
+      </a>
+      <h1 class="game-title" id="puzzleTitle">The Crossword</h1>
+      <div class="game-actions">
+        <span class="game-timer" id="gameTimer">0:00</span>
+        <button class="btn btn-ghost" id="btnClear">Clear</button>
+        <button class="btn btn-primary" id="btnSubmit">Submit</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="cw-layout">
+    <div class="cw-board-wrap">
+      <div class="cw-clue-bar" id="cwClueBar">
+        <button class="clue-nav clue-prev" aria-label="Previous">‹</button>
+        <span class="clue-text">Tap a square to begin.</span>
+        <button class="clue-nav clue-next" aria-label="Next">›</button>
+      </div>
+      <div class="cw-board" id="cwBoard"></div>
+      <p class="cw-author" id="puzzleAuthor"></p>
+    </div>
+
+    <aside class="cw-clues">
+      <div class="cw-clue-list">
+        <h4>Across</h4>
+        <ol id="acrossList"></ol>
+      </div>
+      <div class="cw-clue-list">
+        <h4>Down</h4>
+        <ol id="downList"></ol>
+      </div>
+    </aside>
+  </main>
+
+  <div class="cw-word-preview" id="cwWordPreview" aria-hidden="true"></div>
+  <div class="cw-keyboard" id="cwKeyboard"></div>
+
+  <div class="modal-backdrop" id="winModal">
+    <div class="modal">
+      <button class="modal-close">&times;</button>
+      <h2>You solved it 🤍</h2>
+      <p class="modal-body">Nice work.</p>
+      <a class="btn btn-primary" href="../index.html">Back to games</a>
+    </div>
+  </div>
+
+  <script>window.CW_DATA_KEY = 'CROSSWORD_DATA'; window.GAME_TIMER_KEY = 'crossword';</script>
+  <script src="../data/crossword.js"></script>
+  <script src="../js/timer.js"></script>
+  <script src="../js/crossword.js"></script>
+</body>
+</html>

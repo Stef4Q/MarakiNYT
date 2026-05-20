@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>The Mini · Maki</title>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700&family=Karnak+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/main.css" />
+</head>
+<body class="game-page">
+  <header class="game-header">
+    <div class="game-header-inner">
+      <a href="../index.html" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Back
+      </a>
+      <h1 class="game-title" id="puzzleTitle">The Mini</h1>
+      <div class="game-actions">
+        <span class="game-timer" id="gameTimer">0:00</span>
+        <button class="btn btn-ghost" id="btnClear">Clear</button>
+        <button class="btn btn-primary" id="btnSubmit">Submit</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Level picker (default view) -->
+  <main id="miniHub" class="mini-hub"></main>
+
+  <!-- Game view (shown when ?level=N) -->
+  <div id="miniGame" style="display:none;">
+    <div class="mini-game-bar">
+      <button class="btn btn-ghost" id="miniBackToHub">‹ Levels</button>
+      <span class="mini-level-pill" id="miniLevelPill"></span>
+    </div>
+    <main class="cw-layout">
+      <div class="cw-board-wrap">
+        <div class="cw-clue-bar" id="cwClueBar">
+          <button class="clue-nav clue-prev" aria-label="Previous">‹</button>
+          <span class="clue-text">Tap a square to begin.</span>
+          <button class="clue-nav clue-next" aria-label="Next">›</button>
+        </div>
+        <div class="cw-board" id="cwBoard"></div>
+        <p class="cw-author" id="puzzleAuthor"></p>
+      </div>
+      <aside class="cw-clues">
+        <div class="cw-clue-list">
+          <h4>Across</h4>
+          <ol id="acrossList"></ol>
+        </div>
+        <div class="cw-clue-list">
+          <h4>Down</h4>
+          <ol id="downList"></ol>
+        </div>
+      </aside>
+    </main>
+    <div class="cw-word-preview" id="cwWordPreview" aria-hidden="true"></div>
+    <div class="cw-keyboard" id="cwKeyboard"></div>
+  </div>
+
+  <div class="modal-backdrop" id="winModal">
+    <div class="modal">
+      <button class="modal-close">&times;</button>
+      <h2>You did it! 🤍</h2>
+      <p class="modal-body">That was a quick one.</p>
+      <div class="modal-actions">
+        <a class="btn" href="mini.html">Back to levels</a>
+        <a class="btn btn-primary" id="miniNextLvl" href="#" style="display:none;">Next level →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Level data first, then hub picker (which sets CROSSWORD_DATA when a
+       level is selected). Timer + engine come last so they can read the
+       flags the hub set. -->
+  <script src="../data/mini1.js"></script>
+  <script src="../data/mini2.js"></script>
+  <script src="../data/mini3.js"></script>
+  <script src="../js/mini-hub.js"></script>
+  <script src="../js/crossword.js"></script>
+  <script src="../js/timer.js"></script>
+</body>
+</html>

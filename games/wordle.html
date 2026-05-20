@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Wordle · Maki</title>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700&family=Karnak+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/main.css" />
+</head>
+<body class="game-page">
+  <header class="game-header">
+    <div class="game-header-inner">
+      <a href="../index.html" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Back
+      </a>
+      <h1 class="game-title">Wordle</h1>
+      <div class="game-actions">
+        <span class="game-timer" id="gameTimer">0:00</span>
+        <label class="hard-toggle">
+          <input type="checkbox" id="hardModeToggle" />
+          <span>Hard</span>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <main class="wordle-page">
+    <div class="wordle-board" id="wordleBoard"></div>
+    <div class="w-kbd" id="wordleKbd"></div>
+  </main>
+
+  <div class="modal-backdrop" id="winModal">
+    <div class="modal">
+      <button class="modal-close">&times;</button>
+      <h2>Got it!</h2>
+      <p class="modal-body"></p>
+      <a class="btn btn-primary" href="../index.html">Back to games</a>
+    </div>
+  </div>
+
+  <script>window.GAME_TIMER_KEY = 'wordle';</script>
+  <script src="../data/wordle.js"></script>
+  <script src="../data/wordle-dict.js"></script>
+  <script src="../js/timer.js"></script>
+  <script src="../js/wordle.js"></script>
+</body>
+</html>
