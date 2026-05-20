@@ -79,8 +79,13 @@
   // ────── Build the board
   function buildBoard() {
     boardEl.innerHTML = '';
+    // Belt-and-suspenders: set the grid layout inline so it sticks even if
+    // the stylesheet hasn't applied yet (iOS Safari sometimes lays cells
+    // out as block before the grid rule kicks in).
+    boardEl.style.display = 'grid';
     boardEl.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-    boardEl.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+    boardEl.style.gap = '6px';
+    boardEl.style.width = '100%';
     for (let r = 0; r < rows; r++) {
       cells[r] = [];
       for (let c = 0; c < cols; c++) {

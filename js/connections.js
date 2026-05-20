@@ -82,14 +82,32 @@
     [...selected].forEach(t => groups.set(t.group, (groups.get(t.group) || 0) + 1));
     const [topGroup, topCount] = [...groups.entries()].sort((a, b) => b[1] - a[1])[0];
     if (topCount === 4) {
-      solvedGroups.push(topGroup);
-      selected.clear();
-      render();
-      if (solvedGroups.length === DATA.groups.length) {
-        const t = window.GameTimer ? window.GameTimer.stop() : null;
-        const tStr = t != null ? ` · ${Math.floor(t/60)}:${String(t%60).padStart(2,'0')}` : '';
-        setTimeout(() => showModal('You got them all!', `Four out of four${tStr}. I love how your brain works.`), 400);
-      }
+      // Smooth snap-and-lock animation before committing the group.
+      const matched = [...selected];
+      matched.forEach(t => {
+        if (!t.el) return;
+        t.el.classList.add('bounce');
+        if (topGroup.color) t.el.style.setProperty('--conn-solved-bg', topGroup.color);
+      });
+      // After the little bounce, fade the tiles into the solved row.
+      setTimeout(() => {
+        matched.forEach(t => {
+          if (t.el) {
+            t.el.classList.remove('bounce', 'selected');
+            t.el.classList.add('lock-in');
+          }
+        });
+      }, 380);
+      setTimeout(() => {
+        solvedGroups.push(topGroup);
+        selected.clear();
+        render();
+        if (solvedGroups.length === DATA.groups.length) {
+          const t = window.GameTimer ? window.GameTimer.stop() : null;
+          const tStr = t != null ? ` · ${Math.floor(t/60)}:${String(t%60).padStart(2,'0')}` : '';
+          setTimeout(() => showModal('You got them all!', `Four out of four${tStr}. I love how your brain works.`), 400);
+        }
+      }, 820);
     } else {
       // Shake
       [...selected].forEach(t => {

@@ -715,6 +715,31 @@ button { font-family: inherit; cursor: pointer; }
   60% { transform: translateX(-4px); }
   80% { transform: translateX(4px); }
 }
+/* Smooth "snap together" when a group is correct. */
+.conn-tile.bounce { animation: conn-bounce 0.5s ease; }
+@keyframes conn-bounce {
+  0% { transform: translateY(0) scale(1); }
+  35% { transform: translateY(-8px) scale(1.05); }
+  70% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(0) scale(1); }
+}
+.conn-tile.lock-in {
+  background: var(--conn-solved-bg, #efe49a) !important;
+  color: #1a1a1a !important;
+  animation: conn-lockin 0.45s ease forwards;
+}
+@keyframes conn-lockin {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.04); opacity: 1; }
+  100% { transform: scale(0.96); opacity: 0; }
+}
+.conn-solved-row {
+  animation: conn-row-in 0.45s ease;
+}
+@keyframes conn-row-in {
+  from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
 .conn-mistakes {
   font-family: var(--sans);
   font-size: 14px;
@@ -1331,14 +1356,17 @@ button { font-family: inherit; cursor: pointer; }
 }
 .str-board {
   display: grid;
+  grid-template-columns: repeat(6, 1fr);
   gap: 6px;
   width: 100%;
-  aspect-ratio: 6 / 8;  /* matches 6 cols × 8 rows */
+  min-height: 360px; /* fallback if aspect-ratio on cells fails */
 }
 .str-cell {
   background: #f1efe7;
   border-radius: 50%;
   aspect-ratio: 1 / 1;
+  min-width: 0;
+  min-height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
