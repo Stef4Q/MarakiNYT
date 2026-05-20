@@ -20,7 +20,10 @@
   let guesses = [];
   let current = '';
   let done = false;
+  let revealing = false;
   const keyStatus = {};
+  const REVEAL_STEP_MS = 280;
+  const REVEAL_DURATION_MS = 560;
 
   // Hard mode — persist preference
   let hardMode = false;
@@ -87,16 +90,19 @@
     return status;
   }
 
-  function render() {
+  // Skip a row when an animation is currently driving its state, so we
+  // don't snap the colors on mid-flight before each tile finishes flipping.
+  function render(skipRow) {
     for (let r = 0; r < ROWS; r++) {
       const guess = guesses[r] || (r === guesses.length ? current : '');
       const status = r < guesses.length ? scoreGuess(guesses[r]) : null;
       for (let c = 0; c < COLS; c++) {
         const cell = boardEl.children[r].children[c];
         const ch = guess[c] || '';
+        if (r === skipRow) continue;
         cell.textContent = ch;
         cell.classList.toggle('filled', !!ch);
-        cell.classList.remove('correct', 'present', 'absent');
+        cell.classList.remove('correct', 'present', 'absent', 'reveal', 'pop');
         if (status) cell.classList.add(status[c]);
       }
     }
@@ -107,6 +113,40 @@
         btn.classList.add(st);
       }
     });
+  }
+
+  // Sequential flip-reveal — each tile flips ~280ms after the previous one,
+  // with the color landing at the midpoint of the flip for a smooth feel.
+  function revealRow(rowIdx, status, after) {
+    const row = boardEl.children[rowIdx];
+    if (!row) { if (after) after(); return; }
+    revealing = true;
+    for (let c = 0; c < COLS; c++) {
+      const cell = row.children[c];
+      cell.classList.remove('correct', 'present', 'absent');
+      setTimeout(() => {
+        cell.classList.add('reveal');
+        // Apply color mid-flip so the back face shows the result.
+        setTimeout(() => {
+          cell.classList.add(status[c]);
+        }, REVEAL_DURATION_MS / 2);
+      }, c * REVEAL_STEP_MS);
+    }
+    const total = (COLS - 1) * REVEAL_STEP_MS + REVEAL_DURATION_MS;
+    setTimeout(() => {
+      revealing = false;
+      if (after) after();
+    }, total);
+  }
+
+  function popCell(rowIdx, colIdx) {
+    const row = boardEl.children[rowIdx];
+    if (!row) return;
+    const cell = row.children[colIdx];
+    if (!cell) return;
+    cell.classList.remove('pop');
+    void cell.offsetWidth;
+    cell.classList.add('pop');
   }
 
   function updateKeyStatus(guess) {
@@ -184,7 +224,7 @@
   }
 
   function handleKey(ch) {
-    if (done) return;
+    if (done || revealing) return;
     if (ch === '⌫' || ch === 'Backspace') {
       current = current.slice(0, -1);
       render();
@@ -200,25 +240,42 @@
         const violation = violatesHardMode(upper);
         if (violation) { shakeRow(guesses.length); showToast(violation); return; }
       }
+      const rowIdx = guesses.length;
       guesses.push(upper);
-      updateKeyStatus(upper);
+      const status = scoreGuess(upper);
       const won = upper === ANSWER;
       current = '';
-      render();
-      if (won) {
-        done = true;
-        const t = window.GameTimer ? window.GameTimer.stop() : null;
-        const tStr = t != null ? ` · ${Math.floor(t/60)}:${String(t%60).padStart(2,'0')}` : '';
-        setTimeout(() => showModal('Got it! 🤍', `${guesses.length} ${guesses.length === 1 ? 'try' : 'tries'}${tStr}`), 350);
-      } else if (guesses.length >= ROWS) {
-        done = true;
-        if (window.GameTimer) window.GameTimer.stop();
-        setTimeout(() => showModal('So close', `The word was ${ANSWER}.`), 350);
+      // Paint the guess letters without colors first, then animate the reveal.
+      render(rowIdx);
+      const row = boardEl.children[rowIdx];
+      if (row) {
+        for (let c = 0; c < COLS; c++) {
+          const cell = row.children[c];
+          cell.textContent = upper[c];
+          cell.classList.add('filled');
+          cell.classList.remove('correct', 'present', 'absent', 'reveal', 'pop');
+        }
       }
+      revealRow(rowIdx, status, () => {
+        updateKeyStatus(upper);
+        render();
+        if (won) {
+          done = true;
+          const t = window.GameTimer ? window.GameTimer.stop() : null;
+          const tStr = t != null ? ` · ${Math.floor(t/60)}:${String(t%60).padStart(2,'0')}` : '';
+          setTimeout(() => showModal('Got it! 🤍', `${guesses.length} ${guesses.length === 1 ? 'try' : 'tries'}${tStr}`), 250);
+        } else if (guesses.length >= ROWS) {
+          done = true;
+          if (window.GameTimer) window.GameTimer.stop();
+          setTimeout(() => showModal('So close', `The word was ${ANSWER}.`), 250);
+        }
+      });
     } else if (/^[A-Z]$/.test(ch.toUpperCase()) && ch.length === 1) {
       if (current.length < COLS) {
+        const col = current.length;
         current += ch.toUpperCase();
         render();
+        popCell(guesses.length, col);
       }
     }
   }

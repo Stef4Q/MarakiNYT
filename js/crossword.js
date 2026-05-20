@@ -15,6 +15,7 @@
   const downListEl = document.getElementById('downList');
   const titleEl = document.getElementById('puzzleTitle');
   const authorEl = document.getElementById('puzzleAuthor');
+  const wordPreviewEl = document.getElementById('cwWordPreview');
 
   if (titleEl) titleEl.textContent = DATA.title;
   if (authorEl) authorEl.textContent = 'By ' + DATA.author;
@@ -187,7 +188,7 @@
       const num = active.dir === 'across' ? active.cell.acrossNum : active.cell.downNum;
       if (num) {
         const li = document.querySelector(`.cw-clue-list li[data-dir="${active.dir}"][data-num="${num}"]`);
-        if (li) { li.classList.add('active-clue'); li.scrollIntoView({ block: 'nearest' }); }
+        if (li) { li.classList.add('active-clue'); scrollIntoList(li); }
       }
       const otherDir = active.dir === 'across' ? 'down' : 'across';
       const otherNum = otherDir === 'across' ? active.cell.acrossNum : active.cell.downNum;
@@ -196,6 +197,60 @@
         if (li) li.classList.add('parallel-clue');
       }
     }
+
+    renderWordPreview(word);
+  }
+
+  // Scroll the active clue inside its own <ol> only — never the page.
+  // This stops cell-taps from teleporting the viewport to the clue list.
+  function scrollIntoList(li) {
+    const ol = li.parentElement;
+    if (!ol) return;
+    const olRect = ol.getBoundingClientRect();
+    const liRect = li.getBoundingClientRect();
+    if (liRect.top < olRect.top) {
+      ol.scrollTop += liRect.top - olRect.top - 4;
+    } else if (liRect.bottom > olRect.bottom) {
+      ol.scrollTop += liRect.bottom - olRect.bottom + 4;
+    }
+  }
+
+  // Magnified strip showing the current word's letters — pinned above the
+  // on-screen keyboard so users can see what they're typing without
+  // squinting at the tiny grid cells.
+  function renderWordPreview(word) {
+    if (!wordPreviewEl) return;
+    if (!active || !word || word.length <= 1) {
+      wordPreviewEl.innerHTML = '';
+      wordPreviewEl.classList.remove('visible');
+      return;
+    }
+    wordPreviewEl.classList.add('visible');
+    const num = active.dir === 'across' ? active.cell.acrossNum : active.cell.downNum;
+    const labelText = num ? `${num}${active.dir === 'across' ? 'A' : 'D'}` : '';
+    // Reuse existing DOM where possible to keep CSS transitions stable.
+    const desiredLen = word.length + (labelText ? 1 : 0);
+    while (wordPreviewEl.children.length > desiredLen) {
+      wordPreviewEl.removeChild(wordPreviewEl.lastChild);
+    }
+    while (wordPreviewEl.children.length < desiredLen) {
+      const span = document.createElement('span');
+      wordPreviewEl.appendChild(span);
+    }
+    let i = 0;
+    if (labelText) {
+      const lbl = wordPreviewEl.children[i++];
+      lbl.className = 'wp-label';
+      lbl.textContent = labelText;
+    }
+    word.forEach((cell, idx) => {
+      const box = wordPreviewEl.children[i++];
+      const isActive = cell === active.cell;
+      box.className = 'wp-box' + (isActive ? ' active' : '') + (cell.wrong ? ' wrong' : '');
+      box.textContent = cell.input || '';
+      box.dataset.idx = idx;
+      box.onclick = () => { active.cell = cell; render(); };
+    });
   }
 
   function moveActive(dr, dc) {
