@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
   <title>Connections · Maki</title>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700&family=Karnak+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../css/main.css" />
@@ -15,7 +17,9 @@
         Back
       </a>
       <h1 class="game-title">Connections</h1>
-      <div style="width:80px"></div>
+      <div class="game-actions">
+        <span class="game-timer" id="gameTimer">0:00</span>
+      </div>
     </div>
   </header>
 
@@ -47,7 +51,9 @@
     </div>
   </div>
 
+  <script>window.GAME_TIMER_KEY = 'connections';</script>
   <script src="../data/connections.js"></script>
+  <script src="../js/timer.js"></script>
   <script src="../js/connections.js"></script>
 </body>
 </html>

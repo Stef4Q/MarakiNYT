@@ -1,32 +1,31 @@
-// Connections — PLACEHOLDER groups.
-// 4 groups of 4 words. Difficulty colors: yellow (easy) → green → blue → purple (hard).
-// Replace later with your own personalized groups.
+// Connections — anniversary edition #001
+// 4 groups of 4. Difficulty: yellow (easy) → green → blue → purple (hard).
 window.CONNECTIONS_DATA = {
   date: "Edition #001",
   groups: [
     {
       level: 0,
-      name: "Things we love",
+      name: "Words to describe her eyes",
       color: "#f9df6d",
-      words: ["COFFEE", "SUNSETS", "PIZZA", "DOGS"]
+      words: ["BIG", "ROUND", "OCULAR", "LACUSTRINE"]
     },
     {
       level: 1,
-      name: "Date-night spots",
+      name: "Movies we watched together",
       color: "#a0c35a",
-      words: ["CINEMA", "PARK", "ROOFTOP", "BEACH"]
+      words: ["12", "2001", "LITTLE", "ANATOMY"]
     },
     {
       level: 2,
-      name: "___ memory",
+      name: "Road names we had one of our accoms on",
       color: "#b0c4ef",
-      words: ["MUSCLE", "FOND", "SHORT", "SENSE"]
+      words: ["HEALTH", "PRINCE", "LOOP", "AVENUE"]
     },
     {
       level: 3,
-      name: "Hidden in this puzzle: small words",
+      name: "Maria, but with added letters rearranged",
       color: "#ba81c5",
-      words: ["FOREVER", "MARRIED", "MOMENT", "ALWAYS"]
+      words: ["AMARYLLIS", "PARAMEDIC", "LACRIMAL", "MARIACHI"]
     }
   ]
 };

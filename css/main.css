@@ -1,5 +1,18 @@
 /* === Maki · base styles === */
 
+/* Prevent iOS tap-flash, scroll bounce in game pages */
+html { -webkit-text-size-adjust: 100%; }
+body.game-page {
+  overscroll-behavior-y: contain;
+  -webkit-tap-highlight-color: transparent;
+}
+button, .conn-tile, .sb-hex, .w-key, .kbd-key, .cw-cell {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
 :root {
   --bg: #ffffff;
   --ink: #121212;
@@ -884,6 +897,70 @@ button { font-family: inherit; cursor: pointer; }
 @media (max-width: 380px) {
   .games-grid { grid-template-columns: 1fr; }
   .w-cell { width: 42px; height: 42px; font-size: 20px; }
+}
+
+/* ============ Game timer + hard-mode toggle ============ */
+.game-timer {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--ink);
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: #f3f3f3;
+  min-width: 48px;
+  justify-content: center;
+}
+.game-timer.paused {
+  color: var(--ink-faint);
+  background: #f8f8f8;
+}
+.hard-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+.hard-toggle input { accent-color: var(--ink); width: 16px; height: 16px; }
+.hard-toggle:has(input:checked) { color: var(--ink); }
+
+/* Wordle shake row */
+.wordle-board .w-row.shake {
+  animation: w-shake 0.45s ease-in-out;
+}
+@keyframes w-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+/* Tap target sizing minimum for accessibility */
+@media (pointer: coarse) {
+  .btn { min-height: 40px; }
+  .icon-btn { min-width: 40px; min-height: 40px; }
+  .clue-nav { min-width: 36px; min-height: 36px; }
+  .cw-clue-list li { padding: 10px 8px; }
+  .conn-tile { min-height: 56px; }
+}
+
+/* Crossword: clamp grid cell letter size to grid width for huge boards */
+.cw-cell .cell-letter {
+  font-size: clamp(10px, 3vw, 22px);
+}
+.cw-cell .cell-num {
+  font-size: clamp(7px, 1.4vw, 10px);
 }
 
 /* ============ Toast ============ */

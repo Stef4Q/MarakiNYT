@@ -1,5 +1,5 @@
-// Crossword engine — works for any rectangular grid with "." (black) and letters.
-// Loads data from window.CROSSWORD_DATA or window.MINI_DATA (via dataKey).
+// Crossword engine — submit-only mode (no live grading).
+// Loads data from window.CROSSWORD_DATA or window.MINI_DATA (via CW_DATA_KEY).
 
 (function () {
   const dataKey = window.CW_DATA_KEY || 'CROSSWORD_DATA';
@@ -23,8 +23,7 @@
   const cols = DATA.size.cols;
   const grid = DATA.grid;
 
-  // Build cell metadata
-  const cells = []; // { r, c, letter, isBlock, num, acrossNum, downNum, input, el }
+  const cells = [];
   let counter = 1;
 
   for (let r = 0; r < rows; r++) {
@@ -39,7 +38,6 @@
         acrossNum: null,
         downNum: null,
         input: '',
-        revealed: false,
         wrong: false
       });
     }
@@ -50,8 +48,7 @@
     return cells[r * cols + c];
   }
 
-  // Assign clue numbers
-  const acrossStarts = {}; // num -> [cells in word]
+  const acrossStarts = {};
   const downStarts = {};
 
   for (let r = 0; r < rows; r++) {
@@ -83,11 +80,10 @@
     }
   }
 
-  // Render board
   boardEl.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-  // Cap board size based on rows/cols
-  const maxBoardSize = Math.min(560, window.innerWidth - 40);
-  boardEl.style.maxWidth = maxBoardSize + 'px';
+  const sideMax = Math.min(560, window.innerWidth - 40);
+  const colMax = Math.min(sideMax, cols * 44);
+  boardEl.style.maxWidth = colMax + 'px';
   boardEl.style.width = '100%';
 
   cells.forEach((cell) => {
@@ -103,21 +99,15 @@
       const letterEl = document.createElement('span');
       letterEl.className = 'cell-letter';
       el.appendChild(letterEl);
-      el.addEventListener('mousedown', (e) => {
-        e.preventDefault();
-        onCellClick(cell);
-      });
-      el.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        onCellClick(cell);
-      }, { passive: false });
+      el.addEventListener('mousedown', (e) => { e.preventDefault(); onCellClick(cell); });
+      el.addEventListener('touchstart', (e) => { e.preventDefault(); onCellClick(cell); }, { passive: false });
     }
     cell.el = el;
     boardEl.appendChild(el);
   });
 
-  // Render clue lists
   function renderClueList(listEl, startsMap, clueObj, dir) {
+    if (!listEl) return;
     listEl.innerHTML = '';
     const nums = Object.keys(startsMap).map(n => parseInt(n)).sort((a, b) => a - b);
     nums.forEach(num => {
@@ -133,8 +123,7 @@
       li.appendChild(numSpan);
       li.appendChild(text);
       li.addEventListener('click', () => {
-        const firstCell = startsMap[num][0];
-        active = { dir, cell: firstCell };
+        active = { dir, cell: startsMap[num][0] };
         render();
       });
       listEl.appendChild(li);
@@ -143,14 +132,9 @@
   renderClueList(acrossListEl, acrossStarts, DATA.clues.across, 'across');
   renderClueList(downListEl, downStarts, DATA.clues.down, 'down');
 
-  // Active selection state
   let active = null;
-  // Find first non-block cell to start
   for (const cell of cells) {
-    if (!cell.isBlock && cell.acrossNum) {
-      active = { dir: 'across', cell };
-      break;
-    }
+    if (!cell.isBlock && cell.acrossNum) { active = { dir: 'across', cell }; break; }
   }
 
   function onCellClick(cell) {
@@ -187,10 +171,8 @@
       cell.el.classList.toggle('active', active && cell === active.cell);
       cell.el.classList.toggle('highlight', wordSet.has(cell) && cell !== (active && active.cell));
       cell.el.classList.toggle('wrong', cell.wrong);
-      cell.el.classList.toggle('revealed', cell.revealed);
     });
 
-    // Clue bar
     if (active) {
       const num = active.dir === 'across' ? active.cell.acrossNum : active.cell.downNum;
       const clueText = num ? (DATA.clues[active.dir] && DATA.clues[active.dir][num]) : '';
@@ -198,7 +180,6 @@
         num ? `${num}${active.dir === 'across' ? 'A' : 'D'}. ${clueText || '(clue missing)'}` : '';
     }
 
-    // Clue list highlight
     document.querySelectorAll('.cw-clue-list li').forEach(li => {
       li.classList.remove('active-clue', 'parallel-clue');
     });
@@ -206,10 +187,7 @@
       const num = active.dir === 'across' ? active.cell.acrossNum : active.cell.downNum;
       if (num) {
         const li = document.querySelector(`.cw-clue-list li[data-dir="${active.dir}"][data-num="${num}"]`);
-        if (li) {
-          li.classList.add('active-clue');
-          li.scrollIntoView({ block: 'nearest' });
-        }
+        if (li) { li.classList.add('active-clue'); li.scrollIntoView({ block: 'nearest' }); }
       }
       const otherDir = active.dir === 'across' ? 'down' : 'across';
       const otherNum = otherDir === 'across' ? active.cell.acrossNum : active.cell.downNum;
@@ -242,18 +220,10 @@
     if (!active) return;
     const word = currentWord();
     const idx = word.indexOf(active.cell);
-    // Move to next empty in word, else next cell in word, else stay
     for (let i = idx + 1; i < word.length; i++) {
-      if (!word[i].input) {
-        active.cell = word[i];
-        render();
-        return;
-      }
+      if (!word[i].input) { active.cell = word[i]; render(); return; }
     }
-    if (idx + 1 < word.length) {
-      active.cell = word[idx + 1];
-      render();
-    }
+    if (idx + 1 < word.length) { active.cell = word[idx + 1]; render(); }
   }
 
   function backspaceCell() {
@@ -261,9 +231,8 @@
     if (active.cell.input) {
       active.cell.input = '';
       active.cell.wrong = false;
-      active.cell.revealed = false;
       render();
-      checkComplete();
+      save();
       return;
     }
     const word = currentWord();
@@ -272,9 +241,8 @@
       active.cell = word[idx - 1];
       active.cell.input = '';
       active.cell.wrong = false;
-      active.cell.revealed = false;
       render();
-      checkComplete();
+      save();
     }
   }
 
@@ -282,10 +250,8 @@
     if (!active || active.cell.isBlock) return;
     active.cell.input = ch.toUpperCase();
     active.cell.wrong = false;
-    active.cell.revealed = false;
     render();
     save();
-    checkComplete();
     advance();
   }
 
@@ -296,11 +262,9 @@
       localStorage.setItem(key, JSON.stringify(state));
     } catch (e) {}
   }
-
   function load() {
     try {
-      const key = 'maraki_cw_' + dataKey;
-      const raw = localStorage.getItem(key);
+      const raw = localStorage.getItem('maraki_cw_' + dataKey);
       if (!raw) return;
       const state = JSON.parse(raw);
       state.forEach((v, i) => {
@@ -309,57 +273,64 @@
     } catch (e) {}
   }
 
-  function checkComplete() {
-    const done = cells.every(c => c.isBlock || (c.input && c.input === c.letter));
-    if (done) {
-      setTimeout(() => showWinModal(), 100);
+  // Submit grading
+  function gradeFromAnswers() {
+    // Use DATA.answers.across/down where supplied; fall back to grid letters.
+    const errors = [];
+    cells.forEach(c => { c.wrong = false; });
+
+    function gradeWord(dirCells, expected) {
+      if (!expected) return;
+      expected = expected.toUpperCase();
+      for (let i = 0; i < dirCells.length; i++) {
+        const cell = dirCells[i];
+        const want = expected[i];
+        if (!want) continue;
+        if ((cell.input || '') !== want) {
+          cell.wrong = true;
+          errors.push(cell);
+        }
+      }
     }
+
+    Object.entries(acrossStarts).forEach(([num, w]) => {
+      const ans = (DATA.answers && DATA.answers.across && DATA.answers.across[num]) ||
+                  w.map(c => c.letter).join('');
+      gradeWord(w, ans);
+    });
+    Object.entries(downStarts).forEach(([num, w]) => {
+      const ans = (DATA.answers && DATA.answers.down && DATA.answers.down[num]) ||
+                  w.map(c => c.letter).join('');
+      gradeWord(w, ans);
+    });
+
+    return errors.length;
   }
 
-  function showWinModal() {
-    const modal = document.getElementById('winModal');
-    if (modal) modal.classList.add('open');
-  }
+  document.getElementById('btnSubmit')?.addEventListener('click', () => {
+    // Need a complete grid
+    const empty = cells.some(c => !c.isBlock && !c.input);
+    if (empty) {
+      if (!confirm('Some squares are empty. Submit anyway?')) return;
+    }
+    const errors = gradeFromAnswers();
+    render();
+    if (errors === 0) {
+      const t = window.GameTimer ? window.GameTimer.stop() : null;
+      const tStr = t != null ? ` in ${Math.floor(t/60)}:${String(t%60).padStart(2,'0')}` : '';
+      showWinModal(`You solved it${tStr} 🤍`, "Beautiful work.");
+    } else {
+      showToast(`${errors} ${errors === 1 ? 'square is' : 'squares are'} wrong`);
+    }
+  });
 
-  // Toolbar actions
-  document.getElementById('btnCheck')?.addEventListener('click', () => {
-    cells.forEach(c => {
-      if (c.isBlock || !c.input) return;
-      c.wrong = c.input !== c.letter;
-    });
-    render();
-    showToast('Checked');
-  });
-  document.getElementById('btnReveal')?.addEventListener('click', () => {
-    if (!confirm('Reveal entire puzzle?')) return;
-    cells.forEach(c => {
-      if (c.isBlock) return;
-      c.input = c.letter;
-      c.revealed = true;
-      c.wrong = false;
-    });
-    render();
-    save();
-    checkComplete();
-  });
-  document.getElementById('btnRevealWord')?.addEventListener('click', () => {
-    currentWord().forEach(c => {
-      c.input = c.letter;
-      c.revealed = true;
-      c.wrong = false;
-    });
-    render();
-    save();
-    checkComplete();
-  });
   document.getElementById('btnClear')?.addEventListener('click', () => {
     if (!confirm('Clear all entries?')) return;
-    cells.forEach(c => { c.input = ''; c.wrong = false; c.revealed = false; });
+    cells.forEach(c => { c.input = ''; c.wrong = false; });
     render();
     save();
   });
 
-  // Clue bar nav
   clueBarEl.querySelector('.clue-prev')?.addEventListener('click', () => prevWord());
   clueBarEl.querySelector('.clue-next')?.addEventListener('click', () => nextWord());
 
@@ -386,7 +357,6 @@
     render();
   }
 
-  // Keyboard input
   document.addEventListener('keydown', (e) => {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     const k = e.key;
@@ -400,28 +370,24 @@
       if (active) {
         const other = active.dir === 'across' ? 'down' : 'across';
         if ((other === 'across' && active.cell.acrossNum) || (other === 'down' && active.cell.downNum)) {
-          active.dir = other;
-          render();
+          active.dir = other; render();
         }
       }
       e.preventDefault();
-    } else if (k === 'Enter') {
-      nextWord();
-      e.preventDefault();
-    }
+    } else if (k === 'Enter') { nextWord(); e.preventDefault(); }
   });
 
-  // On-screen keyboard for touch
   const kbd = document.getElementById('cwKeyboard');
   if (kbd) {
-    const rows = ['QWERTYUIOP', 'ASDFGHJKL', '↵ZXCVBNM⌫'];
-    rows.forEach(rowStr => {
+    const layout = ['QWERTYUIOP', 'ASDFGHJKL', '↵ZXCVBNM⌫'];
+    layout.forEach(rowStr => {
       const rowEl = document.createElement('div');
       rowEl.className = 'kbd-row';
       for (const ch of rowStr) {
         const key = document.createElement('button');
         key.className = 'kbd-key' + (ch === '↵' || ch === '⌫' ? ' wide' : '');
         key.textContent = ch;
+        key.addEventListener('mousedown', (e) => e.preventDefault());
         key.addEventListener('click', (e) => {
           e.preventDefault();
           if (ch === '⌫') backspaceCell();
@@ -434,7 +400,6 @@
     });
   }
 
-  // Toast
   function showToast(msg) {
     let toast = document.getElementById('toast');
     if (!toast) {
@@ -445,19 +410,24 @@
     }
     toast.textContent = msg;
     toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 1500);
+    setTimeout(() => toast.classList.remove('show'), 1800);
   }
 
-  // Modal close
+  function showWinModal(title, body) {
+    const modal = document.getElementById('winModal');
+    if (!modal) return;
+    modal.querySelector('h2').textContent = title;
+    const bodyEl = modal.querySelector('.modal-body');
+    if (bodyEl) bodyEl.textContent = body;
+    modal.classList.add('open');
+  }
+
   document.querySelectorAll('.modal-close, .modal-backdrop').forEach(el => {
     el.addEventListener('click', (e) => {
-      if (e.target === el) {
-        document.getElementById('winModal')?.classList.remove('open');
-      }
+      if (e.target === el) document.getElementById('winModal')?.classList.remove('open');
     });
   });
 
-  // Init
   load();
   render();
 })();

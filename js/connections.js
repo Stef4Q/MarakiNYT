@@ -86,7 +86,9 @@
       selected.clear();
       render();
       if (solvedGroups.length === DATA.groups.length) {
-        setTimeout(() => showModal('You got them all!', 'Four out of four. I love how your brain works.'), 400);
+        const t = window.GameTimer ? window.GameTimer.stop() : null;
+        const tStr = t != null ? ` · ${Math.floor(t/60)}:${String(t%60).padStart(2,'0')}` : '';
+        setTimeout(() => showModal('You got them all!', `Four out of four${tStr}. I love how your brain works.`), 400);
       }
     } else {
       // Shake
@@ -106,6 +108,7 @@
           });
           selected.clear();
           render();
+          if (window.GameTimer) window.GameTimer.stop();
           showModal('So close!', "We'll get it next time.");
         }, 700);
       } else {
